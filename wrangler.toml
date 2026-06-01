@@ -1,0 +1,9 @@
+# Cloudflare Workers + Static Assets config.
+# Deploys the contents of this directory as a static site behind a no-op Worker.
+# Triggered by `npx wrangler deploy` from Cloudflare's CI on every push.
+
+name = "devdeck-site"
+compatibility_date = "2025-01-01"
+
+[assets]
+directory = "./"

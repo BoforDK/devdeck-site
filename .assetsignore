@@ -1,0 +1,5 @@
+# Files in this directory NOT to publish as static assets.
+# Without this, https://devdeck.sh/wrangler.toml would 200.
+wrangler.toml
+.assetsignore
+README.md
