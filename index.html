@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devdeck — Xcode-style AI agent workspace for macOS</title>
+    <meta name="description" content="Devdeck is a macOS-only orchestrator for AI coding agents: three-pane shell over Git worktrees, terminals, diffs, an embedded browser, and Claude Code sessions.">
+    <style>
+        :root {
+            color-scheme: light dark;
+            --fg: #1d1d1f;
+            --bg: #fbfbfd;
+            --muted: #6e6e73;
+            --accent: #0071e3;
+            --card: #ffffff;
+            --border: #d2d2d7;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --fg: #f5f5f7;
+                --bg: #000;
+                --muted: #86868b;
+                --accent: #2997ff;
+                --card: #1d1d1f;
+                --border: #38383a;
+            }
+        }
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            -webkit-font-smoothing: antialiased;
+        }
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 88px 24px 64px;
+        }
+        h1 {
+            font-size: clamp(40px, 6vw, 64px);
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            margin: 0 0 16px;
+            font-weight: 700;
+        }
+        .tagline {
+            font-size: 21px;
+            color: var(--muted);
+            margin: 0 0 40px;
+            line-height: 1.4;
+        }
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 500;
+            transition: opacity 0.15s;
+        }
+        .cta:hover { opacity: 0.85; }
+        .cta-secondary {
+            display: inline-block;
+            margin-left: 16px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 17px;
+        }
+        .cta-secondary:hover { text-decoration: underline; }
+        .requirements {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+        section {
+            margin-top: 72px;
+        }
+        h2 {
+            font-size: 28px;
+            letter-spacing: -0.01em;
+            margin: 0 0 16px;
+        }
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        ul li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 17px;
+            line-height: 1.5;
+        }
+        ul li:last-child { border-bottom: none; }
+        ul li strong { display: block; margin-bottom: 4px; }
+        ul li span { color: var(--muted); }
+        footer {
+            margin-top: 96px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--muted);
+        }
+        footer a { color: var(--muted); }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Devdeck</h1>
+    <p class="tagline">An Xcode-style workspace for AI coding agents on macOS.<br>Git worktrees, terminals, diffs, and Claude Code sessions in one window.</p>
+
+    <a class="cta" href="https://github.com/BoforDK/devdeck-releases/releases/latest">Download for macOS</a>
+    <a class="cta-secondary" href="https://github.com/BoforDK/devdeck-releases/releases">All releases →</a>
+    <p class="requirements">Requires macOS 15 (Sequoia) or later. Apple silicon &amp; Intel.</p>
+
+    <section>
+        <h2>What's inside</h2>
+        <ul>
+            <li><strong>Worktree-first git workflow</strong><span>Spin up an isolated worktree per task, switch between them like Xcode schemes.</span></li>
+            <li><strong>Three-pane shell</strong><span>Projects sidebar, content workspace (terminals / diffs / browser / agents), inspector.</span></li>
+            <li><strong>Persistent terminals</strong><span>Sessions survive app restarts via an out-of-process daemon.</span></li>
+            <li><strong>Zero-config agent integration</strong><span>Claude Code runs in any tab; status streams back to the app as native notifications.</span></li>
+        </ul>
+    </section>
+
+    <footer>
+        Built by <a href="https://github.com/BoforDK">@BoforDK</a>.
+        Auto-updates via <a href="https://sparkle-project.org">Sparkle 2</a>.
+    </footer>
+</main>
+</body>
+</html>
