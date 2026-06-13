@@ -1,9 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
     <channel>
         <title>Devdeck</title>
         <link>https://devdeck.sh/appcast.xml</link>
         <description>Most recent changes to Devdeck.</description>
         <language>en</language>
+        <item>
+            <title>0.1.0</title>
+            <pubDate>Sat, 13 Jun 2026 18:26:00 +0200</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://devdeck.sh/Devdeck-0.1.0.zip" length="26538790" type="application/octet-stream" sparkle:edSignature="4hHnpOI6IAkPR0Bp1DRRQhiGV8BULlwc6szdVR1EZZkcU8qEN+gNXqvGC+nblkEyDT1ITumtmRThQICe02w2Ag=="/>
+        </item>
     </channel>
 </rss>
