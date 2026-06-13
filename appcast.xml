@@ -11,7 +11,7 @@
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://devdeck.sh/Devdeck-0.1.0.zip" length="26538790" type="application/octet-stream" sparkle:edSignature="4hHnpOI6IAkPR0Bp1DRRQhiGV8BULlwc6szdVR1EZZkcU8qEN+gNXqvGC+nblkEyDT1ITumtmRThQICe02w2Ag=="/>
+            <enclosure url="https://github.com/BoforDK/devdeck-site/releases/download/v0.1.0/Devdeck-0.1.0.zip" length="26538790" type="application/octet-stream" sparkle:edSignature="4hHnpOI6IAkPR0Bp1DRRQhiGV8BULlwc6szdVR1EZZkcU8qEN+gNXqvGC+nblkEyDT1ITumtmRThQICe02w2Ag=="/>
         </item>
     </channel>
 </rss>

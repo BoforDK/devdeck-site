@@ -3,3 +3,10 @@
 wrangler.toml
 .assetsignore
 README.md
+
+# Releases never ship through Static Assets — they live in R2 on
+# dl.devdeck.sh (25 MiB-per-file Static Assets limit would block them
+# and fail the whole deploy). Belt-and-braces if anything cp's a zip
+# into the working tree.
+*.zip
+*.delta
