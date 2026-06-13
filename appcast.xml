@@ -7,6 +7,14 @@
         <language>en</language>
         <item>
             <title>0.1.0</title>
+            <pubDate>Sat, 13 Jun 2026 20:38:59 +0200</pubDate>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/BoforDK/devdeck-site/releases/download/v0.1.0/Devdeck-0.1.0.zip" length="27885436" type="application/octet-stream" sparkle:edSignature="4uFRF4xQDTD2Bxxvn6GJ6MR/3W2R0sG2du1mlj1/bmKhoKrdb3OG0UvG+ogsrMiM/XjqHJsw21L/gn0RxSdSCQ=="/>
+        </item>
+        <item>
+            <title>0.1.0</title>
             <pubDate>Sat, 13 Jun 2026 18:26:00 +0200</pubDate>
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
