@@ -3,134 +3,676 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Devdeck — Xcode-style AI agent workspace for macOS</title>
-    <meta name="description" content="Devdeck is a macOS-only orchestrator for AI coding agents: three-pane shell over Git worktrees, terminals, diffs, an embedded browser, and Claude Code sessions.">
+    <title>Devdeck - Xcode-style AI agent workspace for macOS</title>
+    <meta name="description" content="Devdeck is a macOS workspace for AI coding agents with Git worktrees, terminals, diffs, markdown, browser tabs, and native release updates in one Xcode-style window.">
+    <meta property="og:title" content="Devdeck">
+    <meta property="og:description" content="An Xcode-style workspace for AI coding agents on macOS.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://devdeck.sh/">
+    <meta property="og:image" content="https://devdeck.sh/assets/devdeck-selected-worktree.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" as="image" href="assets/devdeck-selected-worktree.png">
     <style>
         :root {
-            color-scheme: light dark;
-            --fg: #1d1d1f;
-            --bg: #fbfbfd;
+            color-scheme: light;
+            --bg: #ffffff;
+            --bg-soft: #f5f5f7;
+            --bg-elevated: #fbfbfd;
+            --text: #1d1d1f;
             --muted: #6e6e73;
-            --accent: #0071e3;
-            --card: #ffffff;
-            --border: #d2d2d7;
+            --muted-strong: #424245;
+            --blue: #0071e3;
+            --blue-hover: #0077ed;
+            --divider: #d2d2d7;
+            --hairline: rgba(0, 0, 0, 0.08);
+            --shadow: 0 26px 70px rgba(0, 0, 0, 0.16);
+            --max: 1200px;
         }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --fg: #f5f5f7;
-                --bg: #000;
-                --muted: #86868b;
-                --accent: #2997ff;
-                --card: #1d1d1f;
-                --border: #38383a;
-            }
+
+        * {
+            box-sizing: border-box;
         }
-        * { box-sizing: border-box; }
-        html, body {
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            color: var(--text);
             background: var(--bg);
-            color: var(--fg);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
-        main {
-            max-width: 720px;
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        figure {
+            margin: 0;
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .globalnav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 44px;
+            background: rgba(251, 251, 253, 0.82);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+
+        .globalnav-inner {
+            width: min(var(--max), calc(100% - 44px));
+            height: 100%;
             margin: 0 auto;
-            padding: 88px 24px 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
         }
-        h1 {
-            font-size: clamp(40px, 6vw, 64px);
-            line-height: 1.05;
-            letter-spacing: -0.025em;
-            margin: 0 0 16px;
-            font-weight: 700;
-        }
-        .tagline {
-            font-size: 21px;
-            color: var(--muted);
-            margin: 0 0 40px;
-            line-height: 1.4;
-        }
-        .cta {
+
+        .brand {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: var(--accent);
-            color: white;
+            gap: 9px;
+            color: var(--text);
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .brand:hover {
             text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 980px;
+        }
+
+        .brand img {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+        }
+
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            color: var(--muted-strong);
+            font-size: 12px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .navlinks a {
+            color: inherit;
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            padding: 0 11px;
+            border-radius: 999px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 12px;
+            line-height: 1;
+        }
+
+        .nav-cta:hover,
+        .button:hover {
+            background: var(--blue-hover);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            overflow: hidden;
+        }
+
+        .hero {
+            position: relative;
+            padding: 48px 0 0;
+            text-align: center;
+            background: linear-gradient(#fff 0%, #fbfbfd 58%, #f5f5f7 100%);
+        }
+
+        .hero-inner {
+            width: min(var(--max), calc(100% - 44px));
+            margin: 0 auto;
+        }
+
+        .app-icon {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 18px;
+            border-radius: 25%;
+            box-shadow: 0 18px 40px rgba(0, 113, 227, 0.22);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 112px;
+            line-height: 0.94;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .hero-copy {
+            max-width: 860px;
+            margin: 20px auto 0;
+            color: var(--muted);
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.12;
+            letter-spacing: 0;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0 24px;
+            border-radius: 999px;
+            background: var(--blue);
+            color: #fff;
             font-size: 17px;
             font-weight: 500;
-            transition: opacity 0.15s;
+            line-height: 1;
         }
-        .cta:hover { opacity: 0.85; }
-        .cta-secondary {
-            display: inline-block;
-            margin-left: 16px;
-            color: var(--accent);
-            text-decoration: none;
+
+        .text-link {
             font-size: 17px;
+            font-weight: 500;
+            line-height: 1.2;
         }
-        .cta-secondary:hover { text-decoration: underline; }
+
         .requirements {
-            margin-top: 20px;
-            font-size: 13px;
+            margin: 14px 0 0;
             color: var(--muted);
+            font-size: 14px;
+            line-height: 1.45;
         }
-        section {
-            margin-top: 72px;
+
+        .hero-media {
+            width: min(1120px, calc(100% - 28px));
+            max-height: 340px;
+            margin: 34px auto -44px;
+            padding: 8px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
+
+        .hero-media img {
+            width: 100%;
+            height: auto;
+            border-radius: 22px;
+            border: 1px solid var(--hairline);
+        }
+
+        .section {
+            padding: 118px 0 96px;
+            background: var(--bg-soft);
+        }
+
+        .section + .section {
+            padding-top: 96px;
+        }
+
+        .section.white {
+            background: #fff;
+        }
+
+        .container {
+            width: min(var(--max), calc(100% - 44px));
+            margin: 0 auto;
+        }
+
+        .section-header {
+            max-width: 900px;
+            margin-bottom: 46px;
+        }
+
+        .eyebrow {
+            display: block;
+            margin-bottom: 10px;
+            color: #bf4800;
+            font-size: 19px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
         h2 {
-            font-size: 28px;
-            letter-spacing: -0.01em;
-            margin: 0 0 16px;
+            margin: 0;
+            font-size: 80px;
+            line-height: 1.02;
+            font-weight: 700;
+            letter-spacing: 0;
         }
-        ul {
-            padding-left: 0;
-            list-style: none;
-        }
-        ul li {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 17px;
-            line-height: 1.5;
-        }
-        ul li:last-child { border-bottom: none; }
-        ul li strong { display: block; margin-bottom: 4px; }
-        ul li span { color: var(--muted); }
-        footer {
-            margin-top: 96px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
+
+        .section-lede {
+            max-width: 780px;
+            margin: 18px 0 0;
             color: var(--muted);
+            font-size: 28px;
+            line-height: 1.2;
+            font-weight: 600;
         }
-        footer a { color: var(--muted); }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .feature {
+            min-height: 265px;
+            padding: 30px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid var(--hairline);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .feature h3 {
+            margin: 0 0 12px;
+            font-size: 28px;
+            line-height: 1.08;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .feature p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.42;
+        }
+
+        .feature-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            margin-bottom: 28px;
+            border-radius: 12px;
+            background: #f5f5f7;
+            color: var(--blue);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .showcase {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 34px;
+            align-items: center;
+        }
+
+        .showcase-copy {
+            padding: 12px 0;
+        }
+
+        .showcase-copy h2 {
+            font-size: 72px;
+        }
+
+        .showcase-copy p {
+            max-width: 520px;
+            color: var(--muted);
+            font-size: 21px;
+            line-height: 1.32;
+            font-weight: 500;
+        }
+
+        .image-panel {
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid var(--hairline);
+            box-shadow: 0 22px 54px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        .image-panel img {
+            width: 100%;
+        }
+
+        .callout-band {
+            padding: 96px 0;
+            color: #f5f5f7;
+            background:
+                linear-gradient(110deg, rgba(0, 113, 227, 0.94), rgba(22, 24, 29, 0.96)),
+                #16181d;
+        }
+
+        .callout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .callout h2 {
+            max-width: 760px;
+            color: #fff;
+            font-size: 76px;
+        }
+
+        .callout p {
+            max-width: 680px;
+            margin: 18px 0 0;
+            color: rgba(245, 245, 247, 0.74);
+            font-size: 21px;
+            line-height: 1.32;
+        }
+
+        .callout .button {
+            background: #fff;
+            color: #1d1d1f;
+        }
+
+        .callout .button:hover {
+            background: rgba(255, 255, 255, 0.88);
+            color: #1d1d1f;
+        }
+
+        .footer {
+            padding: 34px 0 42px;
+            background: var(--bg-soft);
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .footer-inner {
+            width: min(var(--max), calc(100% - 44px));
+            margin: 0 auto;
+            border-top: 1px solid var(--divider);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: var(--muted-strong);
+        }
+
+        @media (max-width: 900px) {
+            .navlinks a:not(.nav-cta) {
+                display: none;
+            }
+
+            h1 {
+                font-size: 82px;
+            }
+
+            h2,
+            .showcase-copy h2,
+            .callout h2 {
+                font-size: 56px;
+            }
+
+            .section-lede {
+                font-size: 24px;
+            }
+
+            .hero-media {
+                max-height: 280px;
+                margin-top: 30px;
+                margin-bottom: -34px;
+                border-radius: 18px;
+                padding: 5px;
+            }
+
+            .hero-media img {
+                border-radius: 13px;
+            }
+
+            .section {
+                padding-top: 96px;
+                padding-bottom: 72px;
+            }
+
+            .section + .section {
+                padding-top: 72px;
+            }
+
+            .feature-grid,
+            .showcase,
+            .callout {
+                grid-template-columns: 1fr;
+            }
+
+            .feature {
+                min-height: 220px;
+            }
+
+            .callout {
+                align-items: start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .globalnav-inner,
+            .hero-inner,
+            .container,
+            .footer-inner {
+                width: min(100% - 28px, var(--max));
+            }
+
+            .brand {
+                font-size: 15px;
+            }
+
+            .app-icon {
+                width: 74px;
+                height: 74px;
+                margin-bottom: 14px;
+            }
+
+            .hero-copy {
+                font-size: 22px;
+            }
+
+            h1 {
+                font-size: 56px;
+            }
+
+            h2,
+            .showcase-copy h2,
+            .callout h2 {
+                font-size: 44px;
+            }
+
+            .section-lede {
+                font-size: 21px;
+            }
+
+            .hero-actions {
+                gap: 16px;
+                margin-top: 20px;
+            }
+
+            .button {
+                width: 100%;
+                max-width: 290px;
+            }
+
+            .hero-media {
+                width: calc(100% + 360px);
+                max-height: 180px;
+                margin-top: 28px;
+                margin-bottom: -24px;
+                margin-left: -180px;
+                margin-right: -180px;
+            }
+
+            .section-header {
+                margin-bottom: 28px;
+            }
+
+            .feature {
+                padding: 24px;
+            }
+
+            .feature h3 {
+                font-size: 25px;
+            }
+
+            .showcase-copy p,
+            .callout p {
+                font-size: 19px;
+            }
+        }
     </style>
 </head>
 <body>
-<main>
-    <h1>Devdeck</h1>
-    <p class="tagline">An Xcode-style workspace for AI coding agents on macOS.<br>Git worktrees, terminals, diffs, and Claude Code sessions in one window.</p>
+<nav class="globalnav" aria-label="Devdeck">
+    <div class="globalnav-inner">
+        <a class="brand" href="#top" aria-label="Devdeck home">
+            <img src="assets/devdeck-icon.png" alt="">
+            <span>Devdeck</span>
+        </a>
+        <div class="navlinks">
+            <a href="#workflows">Workflows</a>
+            <a href="#workspace">Workspace</a>
+            <a href="#release">Release</a>
+            <a class="nav-cta" href="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.0/Devdeck-0.2.0.zip" download>Download</a>
+        </div>
+    </div>
+</nav>
 
-    <a class="cta" href="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.0/Devdeck-0.2.0.zip" download>Download for macOS</a>
-    <p class="requirements">Requires macOS 15 (Sequoia) or later. Apple silicon &amp; Intel.</p>
-
-    <section>
-        <h2>What's inside</h2>
-        <ul>
-            <li><strong>Worktree-first git workflow</strong><span>Spin up an isolated worktree per task, switch between them like Xcode schemes.</span></li>
-            <li><strong>Three-pane shell</strong><span>Projects sidebar, content workspace (terminals / diffs / browser / agents), inspector.</span></li>
-            <li><strong>Persistent terminals</strong><span>Sessions survive app restarts via an out-of-process daemon.</span></li>
-            <li><strong>Zero-config agent integration</strong><span>Claude Code runs in any tab; status streams back to the app as native notifications.</span></li>
-        </ul>
+<main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-inner">
+            <img class="app-icon" src="assets/devdeck-icon.png" width="512" height="512" alt="Devdeck app icon">
+            <h1 id="hero-title">Devdeck</h1>
+            <p class="hero-copy">An Xcode-style workspace for AI coding agents on macOS.</p>
+            <div class="hero-actions">
+                <a class="button" href="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.0/Devdeck-0.2.0.zip" download>Download for macOS</a>
+                <a class="text-link" href="#workflows">Explore features</a>
+            </div>
+            <p class="requirements">Requires macOS 15 Sequoia or later. Apple silicon and Intel.</p>
+        </div>
+        <figure class="hero-media" aria-label="Devdeck app window">
+            <img src="assets/devdeck-selected-worktree.png" width="2560" height="1520" alt="Devdeck window showing a project sidebar, terminal, markdown editor, and inspector.">
+        </figure>
     </section>
 
-    <footer>
-        Built by <a href="https://github.com/BoforDK">@BoforDK</a>.
-        Auto-updates via <a href="https://sparkle-project.org">Sparkle 2</a>.
-    </footer>
+    <section class="section" id="workflows" aria-labelledby="workflows-title">
+        <div class="container">
+            <header class="section-header">
+                <span class="eyebrow">Agent workflows</span>
+                <h2 id="workflows-title">Worktrees, terminals, diffs, and agents in one place.</h2>
+                <p class="section-lede">Devdeck keeps each coding task isolated while the full context stays visible, from branch state to terminal output to review notes.</p>
+            </header>
+            <div class="feature-grid">
+                <article class="feature">
+                    <div>
+                        <span class="feature-mark">1</span>
+                        <h3>Worktree-first Git</h3>
+                        <p>Create a workspace per task and move between branches without losing the state of another agent run.</p>
+                    </div>
+                </article>
+                <article class="feature">
+                    <div>
+                        <span class="feature-mark">2</span>
+                        <h3>Persistent terminals</h3>
+                        <p>Terminal sessions are managed out of process, so useful context can survive app restarts.</p>
+                    </div>
+                </article>
+                <article class="feature">
+                    <div>
+                        <span class="feature-mark">3</span>
+                        <h3>Native status</h3>
+                        <p>Agent progress, review state, and changed files surface in the window instead of disappearing into a shell tab.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section white" id="workspace" aria-labelledby="workspace-title">
+        <div class="container showcase">
+            <div class="showcase-copy">
+                <span class="eyebrow">Workspace</span>
+                <h2 id="workspace-title">Built like a Mac developer tool.</h2>
+                <p>The interface follows the same familiar rhythm as Xcode: navigators on the left, focused work in the middle, and an inspector on the right when details matter.</p>
+            </div>
+            <figure class="image-panel">
+                <img src="assets/devdeck-global-markdown.png" width="2560" height="1520" alt="Devdeck global markdown window with a split markdown editor and preview.">
+            </figure>
+        </div>
+    </section>
+
+    <section class="section" aria-labelledby="details-title">
+        <div class="container">
+            <header class="section-header">
+                <span class="eyebrow">Review details</span>
+                <h2 id="details-title">Small controls stay close to the work.</h2>
+                <p class="section-lede">Toolbar activity, branch badges, and diff status are compact by design, so the app feels calm during repeated coding sessions.</p>
+            </header>
+            <div class="feature-grid">
+                <figure class="image-panel">
+                    <img src="assets/devdeck-toolbar-pill.png" width="1040" height="176" alt="Devdeck workspace toolbar controls.">
+                </figure>
+                <figure class="image-panel">
+                    <img src="assets/devdeck-toolbar-badges.png" width="720" height="128" alt="Devdeck toolbar status badges.">
+                </figure>
+                <figure class="image-panel">
+                    <img src="assets/devdeck-diff-badges.png" width="840" height="160" alt="Devdeck Git diff status badges.">
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <section class="callout-band" id="release" aria-labelledby="download-title">
+        <div class="container callout">
+            <div>
+                <h2 id="download-title">Download the latest Devdeck release.</h2>
+                <p>Signed and notarized for macOS, with Sparkle updates served from the same release channel.</p>
+            </div>
+            <a class="button" href="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.0/Devdeck-0.2.0.zip" download>Download for macOS</a>
+        </div>
+    </section>
 </main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <span>Built by <a href="https://github.com/BoforDK">@BoforDK</a>. Auto-updates via <a href="https://sparkle-project.org">Sparkle 2</a>.</span>
+        <span><a href="appcast.xml">Appcast</a></span>
+    </div>
+</footer>
 </body>
 </html>
