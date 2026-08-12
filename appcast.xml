@@ -6,6 +6,14 @@
         <description>Most recent changes to Devdeck.</description>
         <language>en</language>
         <item>
+            <title>0.2.10</title>
+            <pubDate>Wed, 12 Aug 2026 09:15:19 +0200</pubDate>
+            <sparkle:version>26</sparkle:version>
+            <sparkle:shortVersionString>0.2.10</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.10/Devdeck-0.2.10.zip" length="18352767" type="application/octet-stream" sparkle:edSignature="i2PA3Tpdj8uLyjFx7w1xkVQAxIfCHGHN302/l+IXRwBe86a8dxHzvEg4b7D57zaE1uQAo3y7HAf5P09yjOYhAA=="/>
+        </item>
+        <item>
             <title>0.2.9</title>
             <pubDate>Tue, 11 Aug 2026 09:10:02 +0200</pubDate>
             <sparkle:version>25</sparkle:version>
@@ -20,14 +28,6 @@
             <sparkle:shortVersionString>0.2.8</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <enclosure url="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.8/Devdeck-0.2.8.zip" length="18364429" type="application/octet-stream" sparkle:edSignature="CPAKHh8k1VpXMm5+bE+MpozJtTMA58VQAfHuDqv9ZS46cBh2v33d7YIWKpANB07TtSi6EU1XQJ9CZAyvS/rfAA=="/>
-        </item>
-        <item>
-            <title>0.2.7</title>
-            <pubDate>Tue, 04 Aug 2026 09:25:13 +0200</pubDate>
-            <sparkle:version>23</sparkle:version>
-            <sparkle:shortVersionString>0.2.7</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/BoforDK/devdeck-site/releases/download/v0.2.7/Devdeck-0.2.7.zip" length="17923103" type="application/octet-stream" sparkle:edSignature="Uidv+TWi3Y3kB6XjR7Tl8OxVjRgQX7QnPc8OSaRDA6FArE1GNNSQHS4yY5IZ56Dc6nVSrWxwz4yU0ATY4WR0CA=="/>
         </item>
     </channel>
 </rss>
